@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/welding-app/static/css/main.3cc5ffe1.css",
-    "main.js": "/welding-app/static/js/main.8d37097a.js",
+    "main.js": "/welding-app/static/js/main.25dd5eaa.js",
     "index.html": "/welding-app/index.html",
     "main.3cc5ffe1.css.map": "/welding-app/static/css/main.3cc5ffe1.css.map",
-    "main.8d37097a.js.map": "/welding-app/static/js/main.8d37097a.js.map"
+    "main.25dd5eaa.js.map": "/welding-app/static/js/main.25dd5eaa.js.map"
   },
   "entrypoints": [
     "static/css/main.3cc5ffe1.css",
-    "static/js/main.8d37097a.js"
+    "static/js/main.25dd5eaa.js"
   ]
 }
