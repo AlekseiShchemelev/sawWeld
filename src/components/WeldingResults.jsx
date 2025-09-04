@@ -1,53 +1,56 @@
 import React from 'react';
 import { calculateWeldingParams } from '../utils/weldingCalculations';
-import './WeldingResults.css';
+import styles from './WeldingResults.css';
 
 const WeldingResults = ({ parameters, onBack }) => {
   const results = calculateWeldingParams(parameters);
 
+  const getEdgeTypeName = (edgeType) => {
+    switch(edgeType) {
+      case 'parallel': return 'без разделки (|| б/р)';
+      case 'v': return 'V-образная (\/)';
+      case 'x': return 'X-образная (X)';
+      default: return edgeType;
+    }
+  };
+
   return (
-   <div className="container">
-      <h2>Режимы сварки для толщины {parameters.thickness} мм</h2>
+    <div style={styles.container}>
+      <h2 style={styles.header}>
+        Режимы сварки для {parameters.material === 'carbon' ? 'углеродистой' : 'нержавеющей'} стали
+      </h2>
       
-      <div className="results">
-        <div className="pass-section">
-          <h3>Первый проход</h3>
-          <div className="result-item">
-            <h4>Сила тока, А</h4>
-            <p>{results.pass1.current}</p>
-          </div>
-          
-          <div className="result-item">
-            <h4>Напряжение, В</h4>
-            <p>{results.pass1.voltage}</p>
-          </div>
-          
-          <div className="result-item">
-            <h4>Скорость сварки, см/мин</h4>
-            <p>{results.pass1.speed}</p>
-          </div>
+      <div style={styles.infoSection}>
+        <div style={styles.wireInfo}>
+          Рекомендуемый диаметр проволоки: {results.wireDiameter} мм
         </div>
-
-        <div className="pass-section">
-          <h3>Второй проход</h3>
-          <div className="result-item">
-            <h4>Сила тока, А</h4>
-            <p>{results.pass2.current}</p>
-          </div>
-
-           <div className="result-item">
-            <h4>Напряжение, В</h4>
-            <p>{results.pass2.voltage}</p>
-          </div>
-          
-          <div className="result-item">
-            <h4>Скорость сварки, см/мин</h4>
-            <p>{results.pass2.speed}</p>
-          </div>
+        <div style={styles.edgeInfo}>
+          Тип разделки: {getEdgeTypeName(results.edgeType)}
         </div>
       </div>
       
-      <button className="back-btn" onClick={onBack}>
+      <table style={styles.table}>
+        <thead>
+          <tr>
+            <th style={styles.tableHeader}>Проход</th>
+            <th style={styles.tableHeader}>Сила тока, А</th>
+            <th style={styles.tableHeader}>Напряжение, В</th>
+            <th style={styles.tableHeader}>Скорость, см/мин</th>
+          </tr>
+        </thead>
+        <tbody>
+          {results.passes.map((pass, index) => (
+            <tr key={index} style={index % 2 === 0 ? styles.evenRow : {}}>
+              <td style={styles.tableCell}>{index + 1}</td>
+              <td style={styles.tableCell}>{pass.current}</td>
+              <td style={styles.tableCell}>{pass.voltage}</td>
+              <td style={styles.tableCell}>{pass.speed}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      
+      <button style={styles.backButton} onClick={onBack}>
         Вернуться к главной странице
       </button>
     </div>

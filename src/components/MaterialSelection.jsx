@@ -1,28 +1,29 @@
 import React, { useState } from 'react';
-import './MaterialSelection.css';
+import styles from './MaterialSelection.css';
 
 const MaterialSelection = ({ onCalculate }) => {
   const [material, setMaterial] = useState('');
   const [thickness, setThickness] = useState(4);
-  const [edgeType, setEdgeType] = useState('parallel');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onCalculate({ material, thickness, edgeType });
+    onCalculate({ material, thickness: parseInt(thickness) });
   };
 
+  const thicknessOptions = [4, 5, 6, 8, 10, 12, 14, 16, 18, 20, 25, 30];
+
   return (
-    <div className="container">
+    <div style={styles.container}>
       <h1>Подбор режимов сварки</h1>
       
       <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="materialType">Тип материала:</label>
+        <div style={styles.formGroup}>
+          <label style={styles.label}>Тип материала:</label>
           <select 
-            id="materialType" 
             value={material} 
             onChange={(e) => setMaterial(e.target.value)}
             required
+            style={styles.select}
           >
             <option value="">-- Выберите материал --</option>
             <option value="carbon">Углеродистые стали (09Г2С, Ст3 и т.п.)</option>
@@ -30,53 +31,35 @@ const MaterialSelection = ({ onCalculate }) => {
           </select>
         </div>
         
-        <div className="form-group">
-          <label htmlFor="thickness">Толщина основного металла: {thickness} мм</label>
-          <input 
-            type="range" 
-            id="thickness" 
-            min="4" 
-            max="40" 
+        <div style={styles.formGroup}>
+          <label style={styles.label}>Толщина основного металла (мм):</label>
+          <select 
             value={thickness} 
-            onChange={(e) => setThickness(parseInt(e.target.value))}
-          />
+            onChange={(e) => setThickness(e.target.value)}
+            style={styles.select}
+          >
+            {thicknessOptions.map(option => (
+              <option key={option} value={option}>
+                {option} мм
+              </option>
+            ))}
+          </select>
         </div>
         
-        <div className="form-group">
-          <label>Разделка кромок:</label>
-          <div className="radio-group">
-            <label>
-              <input 
-                type="radio" 
-                value="parallel" 
-                checked={edgeType === 'parallel'} 
-                onChange={() => setEdgeType('parallel')} 
-              />
-              || б/р
-            </label>
-            <label>
-              <input 
-                type="radio" 
-                value="v" 
-                checked={edgeType === 'v'} 
-                onChange={() => setEdgeType('v')} 
-              />
-              \/
-            </label>
-            <label>
-              <input 
-                type="radio" 
-                value="x" 
-                checked={edgeType === 'x'} 
-                onChange={() => setEdgeType('x')} 
-              />
-              X
-            </label>
-          </div>
+        <div style={styles.infoText}>
+          <strong>Тип разделки определяется автоматически:</strong><br/>
+          {material === 'carbon' ? 
+            '4-14 мм: без разделки, 16-18 мм: V-образная, 20+ мм: X-образная' :
+            '4-12 мм: без разделки, 14-18 мм: V-образная, 20+ мм: X-образная'
+          }
         </div>
         
-        <button type="submit" disabled={!material}>
-          Перейти к режимам сварки
+        <button 
+          type="submit" 
+          disabled={!material}
+          style={{...styles.button, ...(!material ? styles.buttonDisabled : {})}}
+        >
+          Подобрать режимы сварки
         </button>
       </form>
     </div>

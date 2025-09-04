@@ -1,44 +1,183 @@
-// Утилитарные функции для расчета параметров сварки
-export const calculateWeldingParams = (parameters) => {
-  let current1, current2, voltage1, voltage2, speed1, speed2;
+// Конфигурация режимов сварки для углеродистой стали
+const carbonWeldingConfig = {
+  parallel: {
+    4: { wireDiameter: '3', passes: [
+      { current: '290-310', voltage: '28-30', speed: '65-70' },
+      { current: '340-360', voltage: '30-31', speed: '65-70' }
+    ]},
+    5: { wireDiameter: '3', passes: [
+      { current: '290-310', voltage: '28-30', speed: '60-65' },
+      { current: '340-360', voltage: '30-31', speed: '60-65' }
+    ]},
+    6: { wireDiameter: '3', passes: [
+      { current: '300-350', voltage: '28-30', speed: '60-65' },
+      { current: '375-425', voltage: '30-31', speed: '60-65' }
+    ]},
+    8: { wireDiameter: '3', passes: [
+      { current: '435-465', voltage: '30-31', speed: '60-65' },
+      { current: '485-515', voltage: '30-31', speed: '60-65' }
+    ]},
+    10: { wireDiameter: '4', passes: [
+      { current: '485-515', voltage: '30-31', speed: '60-65' },
+      { current: '575-600', voltage: '30-32', speed: '60-65' }
+    ]},
+    12: { wireDiameter: '4', passes: [
+      { current: '585-615', voltage: '30-32', speed: '58-62' },
+      { current: '585-615', voltage: '30-32', speed: '58-62' }
+    ]},
+    14: { wireDiameter: '4', passes: [
+      { current: '560-600', voltage: '30-32', speed: '60-65' },
+      { current: '730-770', voltage: '32-36', speed: '55-60' }
+    ]}
+  },
   
-  if (parameters.material === 'carbon') {
-     if (parameters.thickness === 4 || parameters.thickness === 5) {
-      current1 = '300-350'; voltage1 = '28.5-29.5'; speed1 = '60-65';
-      current2 = '375-425'; voltage2 = '30-31'; speed2 = '60-65';
-    } 
-    else if (parameters.thickness === 6) {
-      current1 = '300-350'; voltage1 = '28.5-29.5'; speed1 = '60-65';
-      current2 = '375-425'; voltage2 = '30-31'; speed2 = '60-65';
-    }
-    else if (parameters.thickness === 8) {
-      current1 = '370-400'; voltage1 = '32-34'; speed1 = '50-55';
-      current2 = '385-425'; voltage2 = '32-34'; speed2 = '50-55';
-    } 
-    else if (parameters.thickness === 10) {
-      current1 = '485-515'; voltage1 = '30-31'; speed1 = '60-65';
-      current2 = '575-600'; voltage2 = '30-32'; speed2 = '60-65';
-    } 
-    else if (parameters.thickness === 12) {
-      current1 = '585-615'; voltage1 = '30-32'; speed1 = '58-62';
-      current2 = '585-615'; voltage2 = '30-32'; speed2 = '58-62';
-    }
-    else if (parameters.thickness === 16) {
-      current1 = '585-615'; voltage1 = '30-32'; speed1 = '58-62';
-      current2 = '585-615'; voltage2 = '30-32'; speed2 = '58-62';
-    }
+  v: {
+    16: { wireDiameter: '4', passes: [
+      { current: '560-600', voltage: '30-32', speed: '60-65' },
+      { current: '730-770', voltage: '32-36', speed: '55-60' }
+    ]},
+    18: { wireDiameter: '4', passes: [
+      { current: '560-600', voltage: '30-32', speed: '60-65' },
+      { current: '730-770', voltage: '32-36', speed: '55-60' }
+    ]}
+  },
+  
+  x: {
+    20: { wireDiameter: '4', passes: [
+      { current: '750-800', voltage: '34-36', speed: '60-65' },
+      { current: '800-850', voltage: '34-36', speed: '60-65' }
+    ]},
+    25: { wireDiameter: '4', passes: [
+      { current: '750-850', voltage: '34-36', speed: '60-65' },
+      { current: '900-950', voltage: '34-36', speed: '60-65' }
+    ]},
+    30: { wireDiameter: '4', passes: [
+      { current: '880-920', voltage: '32-36', speed: '58-62' },
+      { current: '980-1020', voltage: '34-36', speed: '58-62' }
+    ]}
+  }
+};
+
+// Конфигурация для нержавеющей стали
+const stainlessWeldingConfig = {
+  parallel: {
+    4: { wireDiameter: '3', passes: [
+      { current: '250-280', voltage: '26-28', speed: '55-60' },
+      { current: '300-330', voltage: '28-30', speed: '55-60' }
+    ]},
+    5: { wireDiameter: '3', passes: [
+      { current: '250-280', voltage: '26-28', speed: '55-60' },
+      { current: '300-330', voltage: '28-30', speed: '55-60' }
+    ]},
+    6: { wireDiameter: '3', passes: [
+      { current: '250-280', voltage: '26-28', speed: '55-60' },
+      { current: '300-330', voltage: '28-30', speed: '55-60' }
+    ]},
+    8: { wireDiameter: '4', passes: [
+      { current: '250-280', voltage: '26-28', speed: '55-60' },
+      { current: '300-330', voltage: '28-30', speed: '55-60' }
+    ]},
+    10: { wireDiameter: '4', passes: [
+      { current: '250-280', voltage: '26-28', speed: '55-60' },
+      { current: '300-330', voltage: '28-30', speed: '55-60' }
+    ]},
+    12: { wireDiameter: '4', passes: [
+      { current: '250-280', voltage: '26-28', speed: '55-60' },
+      { current: '300-330', voltage: '28-30', speed: '55-60' }
+    ]}
+  },
+
+  v: {
+    14: { wireDiameter: '4', passes: [
+      { current: '560-600', voltage: '30-32', speed: '60-65' },
+      { current: '730-770', voltage: '32-36', speed: '55-60' }
+    ]},
+    16: { wireDiameter: '4', passes: [
+      { current: '560-600', voltage: '30-32', speed: '60-65' },
+      { current: '730-770', voltage: '32-36', speed: '55-60' }
+    ]},
+    18: { wireDiameter: '4', passes: [
+      { current: '560-600', voltage: '30-32', speed: '60-65' },
+      { current: '730-770', voltage: '32-36', speed: '55-60' }
+    ]}
+  },
+
+  x: {
+    20: { wireDiameter: '4', passes: [
+      { current: '750-800', voltage: '34-36', speed: '60-65' },
+      { current: '800-850', voltage: '34-36', speed: '60-65' }
+    ]},
+    25: { wireDiameter: '4', passes: [
+      { current: '750-850', voltage: '34-36', speed: '60-65' },
+      { current: '900-950', voltage: '34-36', speed: '60-65' }
+    ]},
+    30: { wireDiameter: '4', passes: [
+      { current: '880-920', voltage: '32-36', speed: '58-62' },
+      { current: '980-1020', voltage: '34-36', speed: '58-62' }
+    ]}
+  }
+};
+
+// Функция для определения типа разделки
+const determineEdgeType = (material, thickness) => {
+  if (material === 'carbon') {
+    if (thickness >= 4 && thickness <= 14) return 'parallel';
+    if (thickness >= 16 && thickness <= 18) return 'v';
+    if (thickness >= 20) return 'x';
+  } else {
+    if (thickness >= 4 && thickness <= 12) return 'parallel';
+    if (thickness >= 14 && thickness <= 18) return 'v';
+    if (thickness >= 20) return 'x';
+  }
+  return 'parallel'; // значение по умолчанию
+};
+
+// Функция для поиска ближайшей доступной толщины
+const findClosestThickness = (thickness, availableThicknesses) => {
+  return availableThicknesses.reduce((prev, curr) => 
+    Math.abs(curr - thickness) < Math.abs(prev - thickness) ? curr : prev
+  );
+};
+
+export const calculateWeldingParams = (parameters) => {
+  const { material, thickness } = parameters;
+  
+  // Автоматически определяем тип разделки
+  const edgeType = determineEdgeType(material, thickness);
+  
+  let config;
+  
+  if (material === 'carbon') {
+    config = carbonWeldingConfig[edgeType];
+  } else {
+    config = stainlessWeldingConfig[edgeType] || stainlessWeldingConfig.parallel;
   }
   
+  if (!config) {
+    return {
+      wireDiameter: '3',
+      edgeType: 'parallel',
+      passes: [
+        { current: '300-350', voltage: '28-30', speed: '60-65' },
+        { current: '350-400', voltage: '30-32', speed: '60-65' }
+      ]
+    };
+  }
+  
+  const availableThicknesses = Object.keys(config).map(Number);
+  const closestThickness = findClosestThickness(thickness, availableThicknesses);
+  
+  const result = config[closestThickness] || {
+    wireDiameter: '3',
+    passes: [
+      { current: '300-350', voltage: '28-30', speed: '60-65' },
+      { current: '350-400', voltage: '30-32', speed: '60-65' }
+    ]
+  };
+  
+  // Добавляем информацию о типе разделки в результат
   return {
-    pass1: {
-      current: current1,
-      voltage: voltage1,
-      speed: speed1
-    },
-    pass2: {
-      current: current2,
-      voltage: voltage2,
-      speed: speed2
-    }
+    ...result,
+    edgeType: edgeType
   };
 };
