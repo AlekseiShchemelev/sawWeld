@@ -15,42 +15,42 @@ const WeldingResults = ({ parameters, onBack }) => {
   };
 
   return (
-    <div style={styles.container}>
-      <h2 style={styles.header}>
+    <div className={styles.container}>
+      <h2 className={styles.header}>
         Режимы сварки для {parameters.material === 'carbon' ? 'углеродистой' : 'нержавеющей'} стали
       </h2>
       
-      <div style={styles.infoSection}>
-        <div style={styles.wireInfo}>
+      <div className={styles.infoSection}>
+        <div className={styles.wireInfo}>
           Рекомендуемый диаметр проволоки: {results.wireDiameter} мм
         </div>
-        <div style={styles.edgeInfo}>
+        <div className={styles.edgeInfo}>
           Тип разделки: {getEdgeTypeName(results.edgeType)}
         </div>
       </div>
       
-      <table style={styles.table}>
+      <table className={styles.table}>
         <thead>
           <tr>
-            <th style={styles.tableHeader}>Проход</th>
-            <th style={styles.tableHeader}>Сила тока, А</th>
-            <th style={styles.tableHeader}>Напряжение, В</th>
-            <th style={styles.tableHeader}>Скорость, см/мин</th>
+            <th className={styles.tableHeader}>Проход</th>
+            <th className={styles.tableHeader}>Сила тока, А</th>
+            <th className={styles.tableHeader}>Напряжение, В</th>
+            <th className={styles.tableHeader}>Скорость, см/мин</th>
           </tr>
         </thead>
         <tbody>
           {results.passes.map((pass, index) => (
-            <tr key={index} style={index % 2 === 0 ? styles.evenRow : {}}>
-              <td style={styles.tableCell}>{index + 1}</td>
-              <td style={styles.tableCell}>{pass.current}</td>
-              <td style={styles.tableCell}>{pass.voltage}</td>
-              <td style={styles.tableCell}>{pass.speed}</td>
+            <tr key={index} className={index % 2 === 0 ? styles.evenRow : ''}>
+              <td className={styles.tableCell}>{index + 1}</td>
+              <td className={styles.tableCell}>{pass.current}</td>
+              <td className={styles.tableCell}>{pass.voltage}</td>
+              <td className={styles.tableCell}>{pass.speed}</td>
             </tr>
           ))}
         </tbody>
       </table>
       
-      <button style={styles.backButton} onClick={onBack}>
+      <button className={styles.backButton} onClick={onBack}>
         Вернуться к главной странице
       </button>
     </div>

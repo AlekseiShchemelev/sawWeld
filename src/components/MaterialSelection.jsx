@@ -13,17 +13,17 @@ const MaterialSelection = ({ onCalculate }) => {
   const thicknessOptions = [4, 5, 6, 8, 10, 12, 14, 16, 18, 20, 25, 30];
 
   return (
-    <div style={styles.container}>
+    <div className={styles.container}>
       <h1>Подбор режимов сварки</h1>
       
       <form onSubmit={handleSubmit}>
-        <div style={styles.formGroup}>
-          <label style={styles.label}>Тип материала:</label>
+        <div className={styles.formGroup}>
+          <label className={styles.label}>Тип материала:</label>
           <select 
             value={material} 
             onChange={(e) => setMaterial(e.target.value)}
             required
-            style={styles.select}
+            className={styles.select}
           >
             <option value="">-- Выберите материал --</option>
             <option value="carbon">Углеродистые стали (09Г2С, Ст3 и т.п.)</option>
@@ -31,12 +31,12 @@ const MaterialSelection = ({ onCalculate }) => {
           </select>
         </div>
         
-        <div style={styles.formGroup}>
-          <label style={styles.label}>Толщина основного металла (мм):</label>
+        <div className={styles.formGroup}>
+          <label className={styles.label}>Толщина основного металла (мм):</label>
           <select 
             value={thickness} 
             onChange={(e) => setThickness(e.target.value)}
-            style={styles.select}
+            className={styles.select}
           >
             {thicknessOptions.map(option => (
               <option key={option} value={option}>
@@ -46,7 +46,7 @@ const MaterialSelection = ({ onCalculate }) => {
           </select>
         </div>
         
-        <div style={styles.infoText}>
+        <div className={styles.infoText}>
           <strong>Тип разделки определяется автоматически:</strong><br/>
           {material === 'carbon' ? 
             '4-14 мм: без разделки, 16-18 мм: V-образная, 20+ мм: X-образная' :
@@ -57,7 +57,7 @@ const MaterialSelection = ({ onCalculate }) => {
         <button 
           type="submit" 
           disabled={!material}
-          style={{...styles.button, ...(!material ? styles.buttonDisabled : {})}}
+          className={material ? styles.button : `${styles.button} ${styles.buttonDisabled}`}
         >
           Подобрать режимы сварки
         </button>
