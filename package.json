@@ -1,7 +1,7 @@
 {
   "name": "welding-app",
   "version": "0.1.0",
-  "homepage": "https://alekseishchemelev.github.io/welding-app",
+  "homepage": "https://alekseishchemelev.github.io/sawWeld",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
