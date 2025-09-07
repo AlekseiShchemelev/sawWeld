@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/sawWeld/static/css/main.01e3701f.css",
-    "main.js": "/sawWeld/static/js/main.8ef05339.js",
+    "main.css": "/sawWeld/static/css/main.7fbd2aca.css",
+    "main.js": "/sawWeld/static/js/main.e00f29b6.js",
     "index.html": "/sawWeld/index.html",
-    "main.01e3701f.css.map": "/sawWeld/static/css/main.01e3701f.css.map",
-    "main.8ef05339.js.map": "/sawWeld/static/js/main.8ef05339.js.map"
+    "main.7fbd2aca.css.map": "/sawWeld/static/css/main.7fbd2aca.css.map",
+    "main.e00f29b6.js.map": "/sawWeld/static/js/main.e00f29b6.js.map"
   },
   "entrypoints": [
-    "static/css/main.01e3701f.css",
-    "static/js/main.8ef05339.js"
+    "static/css/main.7fbd2aca.css",
+    "static/js/main.e00f29b6.js"
   ]
 }
