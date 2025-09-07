@@ -5,11 +5,12 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "postbuild": "node fix-paths.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d build",
+    "clean": "rmdir /s /q build & rmdir /s /q node_modules\\.cache",
+    "build:win": "npm run clean && react-scripts build"
   },
   "dependencies": {
     "react": "^18.2.0",
