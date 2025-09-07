@@ -212,7 +212,7 @@ const determineEdgeType = (material, thickness) => {
     if (thickness >= 4 && thickness <= 14) return "parallel";
     if (thickness >= 16 && thickness <= 18) return "v";
     if (thickness >= 20) return "x";
-  } else {
+  } else if (material === "stainless") {
     if (thickness >= 4 && thickness <= 12) return "parallel";
     if (thickness >= 14 && thickness <= 18) return "v";
     if (thickness >= 20) return "x";
@@ -228,21 +228,73 @@ const findClosestThickness = (thickness, availableThicknesses) => {
 };
 
 export const calculateWeldingParams = (parameters) => {
-  const { material, thickness } = parameters;
+  try {
+    const { material, thickness } = parameters;
 
-  // Автоматически определяем тип разделки
-  const edgeType = determineEdgeType(material, thickness);
+    // Проверка входных параметров
+    if (!material || !thickness) {
+      throw new Error("Не указаны материал или толщина");
+    }
 
-  let config;
+    // Автоматически определяем тип разделки
+    const edgeType = determineEdgeType(material, thickness);
 
-  if (material === "carbon") {
-    config = carbonWeldingConfig[edgeType];
-  } else {
-    config =
-      stainlessWeldingConfig[edgeType] || stainlessWeldingConfig.parallel;
-  }
+    let config;
 
-  if (!config) {
+    if (material === "carbon") {
+      config = carbonWeldingConfig[edgeType];
+    } else if (material === "stainless") {
+      config = stainlessWeldingConfig[edgeType];
+    } else {
+      throw new Error("Неизвестный тип материала");
+    }
+
+    if (!config) {
+      return {
+        wireDiameter: "3",
+        edgeType: "parallel",
+        passes: [
+          { current: "300-350", voltage: "28-30", speed: "60-65" },
+          { current: "350-400", voltage: "30-32", speed: "60-65" },
+        ],
+      };
+    }
+
+    const availableThicknesses = Object.keys(config).map(Number);
+    
+    // Если нет доступных толщин, вернуть значения по умолчанию
+    if (availableThicknesses.length === 0) {
+      return {
+        wireDiameter: "3",
+        edgeType: "parallel",
+        passes: [
+          { current: "300-350", voltage: "28-30", speed: "60-65" },
+          { current: "350-400", voltage: "30-32", speed: "60-65" },
+        ],
+      };
+    }
+
+    const closestThickness = findClosestThickness(
+      thickness,
+      availableThicknesses
+    );
+
+    const result = config[closestThickness] || {
+      wireDiameter: "3",
+      passes: [
+        { current: "300-350", voltage: "28-30", speed: "60-65" },
+        { current: "350-400", voltage: "30-32", speed: "60-65" },
+      ],
+    };
+
+    // Добавляем информацию о типе разделки в результат
+    return {
+      ...result,
+      edgeType: edgeType,
+    };
+  } catch (error) {
+    console.error("Ошибка расчета параметров сварки:", error);
+    // Возвращаем значения по умолчанию в случае ошибки
     return {
       wireDiameter: "3",
       edgeType: "parallel",
@@ -252,24 +304,4 @@ export const calculateWeldingParams = (parameters) => {
       ],
     };
   }
-
-  const availableThicknesses = Object.keys(config).map(Number);
-  const closestThickness = findClosestThickness(
-    thickness,
-    availableThicknesses
-  );
-
-  const result = config[closestThickness] || {
-    wireDiameter: "3",
-    passes: [
-      { current: "300-350", voltage: "28-30", speed: "60-65" },
-      { current: "350-400", voltage: "30-32", speed: "60-65" },
-    ],
-  };
-
-  // Добавляем информацию о типе разделки в результат
-  return {
-    ...result,
-    edgeType: edgeType,
-  };
 };

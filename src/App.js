@@ -18,9 +18,10 @@ function App() {
 
   return (
     <div className="App">
-      {currentView === 'selection' ? (
+      {currentView === 'selection' && (
         <MaterialSelection onCalculate={handleCalculate} />
-      ) : (
+      )}
+      {currentView === 'results' && parameters && (
         <WeldingResults parameters={parameters} onBack={handleBack} />
       )}
     </div>

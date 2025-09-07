@@ -1,4 +1,4 @@
-.container {
+.results-container {
   max-width: 100%;
   margin: 0 auto;
   background-color: #f8f9fa;
@@ -7,7 +7,7 @@
   box-sizing: border-box;
 }
 
-.header {
+.results-header {
   text-align: center;
   color: #2c3e50;
   font-size: 24px;
@@ -17,11 +17,11 @@
   border-bottom: 2px solid #e0e0e0;
 }
 
-.infoSection {
+.info-section {
   margin-bottom: 30px;
 }
 
-.wireInfo {
+.wire-info {
   background-color: #d4edda;
   padding: 18px;
   border-radius: 6px;
@@ -33,7 +33,7 @@
   border-left: 4px solid #28a745;
 }
 
-.edgeInfo {
+.edge-info {
   background-color: #d1ecf1;
   padding: 18px;
   border-radius: 6px;
@@ -44,7 +44,7 @@
   border-left: 4px solid #17a2b8;
 }
 
-.table {
+.results-table {
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 40px;
@@ -54,7 +54,7 @@
   overflow: hidden;
 }
 
-.tableHeader {
+.table-header {
   background-color: #2c3e50;
   color: white;
   padding: 16px;
@@ -63,18 +63,18 @@
   font-size: 17px;
 }
 
-.tableCell {
+.table-cell {
   padding: 16px;
   border: 1px solid #dee2e6;
   text-align: center;
   background-color: white;
 }
 
-.evenRow .tableCell {
+.even-row .table-cell {
   background-color: #f8f9fa;
 }
 
-.backButton {
+.back-button {
   width: 100%;
   padding: 18px;
   background-color: #3498db;
@@ -87,12 +87,12 @@
   transition: background-color 0.2s ease;
 }
 
-.backButton:hover {
+.back-button:hover {
   background-color: #2980b9;
 }
 
 @media (min-width: 768px) {
-  .container {
+  .results-container {
     max-width: 900px;
     margin: 20px auto;
     border-radius: 8px;
@@ -100,7 +100,7 @@
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   }
   
-  .table {
+  .results-table {
     font-size: 17px;
   }
 }
